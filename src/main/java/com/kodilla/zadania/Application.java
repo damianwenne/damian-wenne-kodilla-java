@@ -102,5 +102,7 @@ class Application {
         System.out.println("\nHashMap size: " + theMap.size());
         System.out.println("Time taken to remove entry from HashMap: " + (end - begin) + "ns");
 
+        System.out.println("Damian Wenne");
+
     }
 }
