@@ -32,7 +32,7 @@ public class ForumTestSuite {
         ForumUser forumUser = new ForumUser("mrsmith", "John Smith");
 
         // When
-        forumUser.addPost("mrsmith", "Hello everyone,this is my forst contribution here!");
+        forumUser.addPost("mrsmith", "Hello everyone,this is my first contribution here!");
 
         // Then
         Assert.assertEquals(1, forumUser.getPostsQuantity());
