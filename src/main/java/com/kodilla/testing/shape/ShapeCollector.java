@@ -1,8 +1,15 @@
 package com.kodilla.testing.shape;
 
+import java.util.ArrayList;
+
 public class ShapeCollector {
 
+    private String name;
+    private ArrayList<String> shape = new ArrayList<>();
+
+
     public void addFigure(Shape shape) {
+
 
     }
 
