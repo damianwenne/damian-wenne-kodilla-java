@@ -5,12 +5,10 @@ import java.util.ArrayList;
 public class ShapeCollector {
 
     private String name;
-    private ArrayList<String> shape = new ArrayList<>();
-
+    public ArrayList<Shape> shape = new ArrayList<>();
 
     public void addFigure(Shape shape) {
-
-
+        shape.add();
     }
 
     public void removeFigure(Shape shape) {
