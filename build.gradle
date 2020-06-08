@@ -19,6 +19,7 @@ dependencies {
     }
     // Test dependencies
     testImplementation('junit:junit:4.13')
+    testImplementation('org.mockito:mockito-all:1.10.19')
 }
 
 test {
