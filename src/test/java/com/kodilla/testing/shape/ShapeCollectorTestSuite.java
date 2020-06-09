@@ -25,19 +25,21 @@ public class ShapeCollectorTestSuite {
     @Test
     public void testAddFigure() {
         // Given
-        ShapeCollector shapes = new ShapeCollector();
+        ShapeCollector shapeCollector = new ShapeCollector();
         Square square = new Square("Square", 10.0);
         Circle circle = new Circle("Circle", 2.5);
         Triangle triangle = new Triangle("Triangle", 1.8, 2.6);
 
         // When
-        shapes.addFigure(square);
-        shapes.addFigure(circle);
-        shapes.addFigure(triangle);
+        shapeCollector.addFigure(square);
+        shapeCollector.addFigure(circle);
+        shapeCollector.addFigure(triangle);
 
         // Then
-        //Assert.assertEquals(shapes.getFigure(0));
+        Assert.assertEquals(3, shapeCollector.showFigures().size());
 
+        //Do remove
+        //Assert.assertTrue();
 
     }
 
