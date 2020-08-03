@@ -74,6 +74,8 @@ public class TicTacToe extends Application {
             leftMenu.setPadding(new Insets(0,5,5,5));
             leftMenu.setSpacing(5);
 
+            restartButton.setOnAction(event -> controller.restart());
+
             BorderPane borderPane = new BorderPane();
             borderPane.setCenter(gridPane);
             borderPane.setTop(topText);

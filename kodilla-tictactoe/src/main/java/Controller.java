@@ -8,6 +8,7 @@ public class Controller {
     private static final Random RANDOM = new Random();
 
     private final List<FieldButton> fieldButtons = new ArrayList<>();
+
     private Controller() {
     }
 
@@ -16,11 +17,14 @@ public class Controller {
         fieldButtons.add(fieldButton);
     }
 
+    boolean pplayerCheck(int a, int b, int c) {
+        return fieldButtons.get(a).getText().equals("X") && fieldButtons.get(b).getText().equals("X") && fieldButtons.get(c).getText().equals("X");
+    }
 
     void playerCheck() {
-        if (fieldButtons.get(0).getText().equals("X") && fieldButtons.get(1).getText().equals("X") && fieldButtons.get(2).getText().equals("X")) {
+        if (pplayerCheck(0, 1, 2)) {
             System.out.println("Wygrałeś");
-        } else if (fieldButtons.get(3).getText().equals("X") && fieldButtons.get(4).getText().equals("X") && fieldButtons.get(5).getText().equals("X")){
+        } else if (pplayerCheck(3, 4, 5)) {
             System.out.println("Wygrałeś");
         } else if (fieldButtons.get(6).getText().equals("X") && fieldButtons.get(7).getText().equals("X") && fieldButtons.get(8).getText().equals("X")) {
             System.out.println("Wygrałeś");
@@ -35,12 +39,16 @@ public class Controller {
         } else if (fieldButtons.get(2).getText().equals("X") && fieldButtons.get(4).getText().equals("X") && fieldButtons.get(6).getText().equals("X")) {
             System.out.println("Wygrałeś");
         }
-}
+    }
+
+    boolean ccompCheck(int d, int e, int f) {
+        return fieldButtons.get(d).getText().equals("O") && fieldButtons.get(e).getText().equals("O") && fieldButtons.get(f).getText().equals("O");
+    }
 
     void compCheck() {
-        if (fieldButtons.get(0).getText().equals("O") && fieldButtons.get(1).getText().equals("O") && fieldButtons.get(2).getText().equals("O")) {
+        if (ccompCheck(0,1,2)) {
             System.out.println("Przegrałeś");
-        } else if (fieldButtons.get(3).getText().equals("O") && fieldButtons.get(4).getText().equals("O") && fieldButtons.get(5).getText().equals("O")){
+        } else if (fieldButtons.get(3).getText().equals("O") && fieldButtons.get(4).getText().equals("O") && fieldButtons.get(5).getText().equals("O")) {
             System.out.println("Przegrałeś");
         } else if (fieldButtons.get(6).getText().equals("O") && fieldButtons.get(7).getText().equals("O") && fieldButtons.get(8).getText().equals("O")) {
             System.out.println("Przegrałeś");
@@ -54,6 +62,12 @@ public class Controller {
             System.out.println("Przegrałeś");
         } else if (fieldButtons.get(2).getText().equals("O") && fieldButtons.get(4).getText().equals("O") && fieldButtons.get(6).getText().equals("O")) {
             System.out.println("Przegrałeś");
+        }
+    }
+
+    void restart() {
+        for (int i = 0; i < fieldButtons.size(); i++) {
+            fieldButtons.get(i).setText("");
         }
     }
 
