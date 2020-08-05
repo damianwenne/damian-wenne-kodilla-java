@@ -8,6 +8,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,6 +21,7 @@ public class Controller {
 
     private final List<FieldButton> fieldButtons = new ArrayList<>();
     private Label theWinnerLabel = new Label();
+    private String savedGameFilePath = "kodilla-tictactoe/src/main/java/savedGameFile.txt";
 
     private Controller() {
     }
@@ -64,7 +66,7 @@ public class Controller {
     void compMove() {
         FieldButton compButton = fieldButtons.get(RANDOM.nextInt(9));
         try {
-            Thread.sleep(1*1000);
+            Thread.sleep(1);
             if (compButton.getText().length() < 1) {
                 compButton.setText("O");
             } else {
@@ -103,7 +105,7 @@ public class Controller {
         }
     }
 
-    public void winnerPopUp() {
+    private void winnerPopUp() {
         Stage winnerPopUpWindow = new Stage();
 
         winnerPopUpWindow.initModality(Modality.APPLICATION_MODAL);
@@ -126,5 +128,41 @@ public class Controller {
         winnerPopUpWindow.setOnCloseRequest(e -> restart());
         winnerPopUpWindow.show();
     }
+
+
+    public void saveGame() {
+        try {
+            FileWriter fileWriter = new FileWriter(savedGameFilePath);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(fieldButtons.toString());
+            bufferedWriter.close();
+        } catch (IOException e) {
+            System.out.println("Save Data File Error!");
+        }
+    }
+
+    public void loadGame() {
+
+        try {
+            File file = new File(savedGameFilePath);
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            bufferedReader.toString();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found!");
+        }
+
+    }
+
+    // TODO
+    // save/load
+    // sleep
+    // draw
+    // WinnerBoard
+    // Difficulty levels
+    // X/O select
+    // Name input
+
 }
 

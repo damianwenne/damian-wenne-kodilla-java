@@ -63,6 +63,8 @@ public class TicTacToe extends Application {
             // Left
             Button saveButton = new Button("Save");
             saveButton.setMinWidth(55);
+            Button loadButton = new Button("Load");
+            loadButton.setMinWidth(55);
             Button restartButton = new Button("Restart");
             restartButton.setMinWidth(55);
             Button oButton = new Button("O");
@@ -70,11 +72,13 @@ public class TicTacToe extends Application {
             Button xButton = new Button("X");
             xButton.setMinSize(55,55);
             VBox leftMenu = new VBox();
-            leftMenu.getChildren().addAll(oButton, xButton,saveButton,restartButton);
+            leftMenu.getChildren().addAll(oButton, xButton, saveButton, loadButton, restartButton);
             leftMenu.setPadding(new Insets(0,5,5,5));
             leftMenu.setSpacing(5);
 
             restartButton.setOnAction(event -> controller.restart());
+            saveButton.setOnAction(event -> controller.saveGame());
+            loadButton.setOnAction(event -> controller.loadGame());
 
             BorderPane borderPane = new BorderPane();
             borderPane.setCenter(gridPane);
