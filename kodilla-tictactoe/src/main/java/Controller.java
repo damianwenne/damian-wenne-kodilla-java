@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class Controller {
 
@@ -25,6 +26,7 @@ public class Controller {
 
     private Controller() {
     }
+
 
     void addButton(FieldButton fieldButton) {
         fieldButtons.add(fieldButton);
@@ -59,7 +61,7 @@ public class Controller {
 
     void restart() {
         for (int i = 0; i < fieldButtons.size(); i++) {
-            fieldButtons.get(i).setText("");
+            fieldButtons.get(i).setText(" ");
         }
     }
 
@@ -67,18 +69,18 @@ public class Controller {
         FieldButton compButton = fieldButtons.get(RANDOM.nextInt(9));
         try {
             Thread.sleep(1);
-            if (compButton.getText().length() < 1) {
+            if (compButton.getText() != "X") {
                 compButton.setText("O");
             } else {
                 compMove();
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("Taken");
         }
     }
 
     public void click(FieldButton button) {
-        if (button.getText().length() > 0) {
+        if (button.getText() != " ") {
             System.out.println("It's already taken");
             return;
         }
@@ -134,8 +136,12 @@ public class Controller {
         try {
             FileWriter fileWriter = new FileWriter(savedGameFilePath);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(fieldButtons.toString());
+            String dataToSave = fieldButtons.stream()
+                    .map(e -> e.getText().replaceAll("X","0").replaceAll("O","1").replaceAll(" ", "2"))
+                    .collect(Collectors.joining());
+            bufferedWriter.write(dataToSave);
             bufferedWriter.close();
+
         } catch (IOException e) {
             System.out.println("Save Data File Error!");
         }
@@ -148,11 +154,20 @@ public class Controller {
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             bufferedReader.toString();
-
+            for (int i=0; i<fieldButtons.size(); i++) {
+                fieldButtons.get(i).setText(bufferedReader.readLine().substring(i,i+1)
+                        .replaceAll("0","X")
+                        .replaceAll("1", "O")
+                        .replaceAll("2", " ")
+                );
+            }
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
+        } catch (IOException e) {
+            System.out.println("Saved data not found");
+        } catch (NullPointerException e) {
+            System.out.println("Null point exception");
         }
-
     }
 
     // TODO

@@ -5,6 +5,7 @@ public class FieldButton extends Button {
 
     public FieldButton(int row, int col) {
         setPrefSize(150,150);
+        setText(" ");
         setOnAction(event -> Controller.INSTANCE.click(this));
         this.row = row;
         this.col = col;
