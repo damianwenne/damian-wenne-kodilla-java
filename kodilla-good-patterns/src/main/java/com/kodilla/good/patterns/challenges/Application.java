@@ -10,17 +10,11 @@ public class Application {
 
         MovieStore movieStore = new MovieStore();
 
-//        movieStore.getMovies().values().stream()
-//                .flatMap(p -> p.)
+        String listOfMovies = movieStore.getMovies().values().stream()
+                .flatMap(p -> p.stream())
+                .collect(Collectors.joining(" ! "));
 
-
-        System.out.println("\n" + movieStore.getMovies());
-
-
-
-
-
-
+        System.out.println(listOfMovies);
 
     }
 }
