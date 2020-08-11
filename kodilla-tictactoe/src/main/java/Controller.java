@@ -69,18 +69,18 @@ public class Controller {
         FieldButton compButton = fieldButtons.get(RANDOM.nextInt(9));
         try {
             Thread.sleep(1);
-            if (compButton.getText() != "X") {
+            if (!compButton.getText().equals("X")) {
                 compButton.setText("O");
             } else {
                 compMove();
             }
         } catch (InterruptedException e) {
-            System.out.println("Taken");
+            System.out.println("This field is taken");
         }
     }
 
     public void click(FieldButton button) {
-        if (button.getText() != " ") {
+        if (!button.getText().equals(" ")) {
             System.out.println("It's already taken");
             return;
         }
@@ -153,13 +153,14 @@ public class Controller {
             File file = new File(savedGameFilePath);
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            bufferedReader.toString();
             for (int i=0; i<fieldButtons.size(); i++) {
-                fieldButtons.get(i).setText(bufferedReader.readLine().substring(i,i+1)
+                FieldButton fieldButton = fieldButtons.get(i);
+                String line = bufferedReader.readLine().substring(i,i+1);
+                String value = line
                         .replaceAll("0","X")
                         .replaceAll("1", "O")
-                        .replaceAll("2", " ")
-                );
+                        .replaceAll("2", " ");
+                fieldButton.setText(value);
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
