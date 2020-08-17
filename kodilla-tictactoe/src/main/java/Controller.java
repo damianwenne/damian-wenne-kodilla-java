@@ -69,7 +69,7 @@ public class Controller {
         FieldButton compButton = fieldButtons.get(RANDOM.nextInt(9));
         try {
             Thread.sleep(1);
-            if (!compButton.getText().equals("X")) {
+            if (!compButton.getText().equals("X") && !compButton.getText().equals("O")) {
                 compButton.setText("O");
             } else {
                 compMove();
