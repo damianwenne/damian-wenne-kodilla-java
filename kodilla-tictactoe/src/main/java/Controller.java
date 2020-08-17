@@ -153,10 +153,11 @@ public class Controller {
             File file = new File(savedGameFilePath);
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = bufferedReader.readLine();
             for (int i=0; i<fieldButtons.size(); i++) {
                 FieldButton fieldButton = fieldButtons.get(i);
-                String line = bufferedReader.readLine().substring(i,i+1);
                 String value = line
+                        .substring(i,i+1)
                         .replaceAll("0","X")
                         .replaceAll("1", "O")
                         .replaceAll("2", " ");
