@@ -179,6 +179,5 @@ public class Controller {
     // Difficulty levels
     // X/O select
     // Name input
-
 }
 
