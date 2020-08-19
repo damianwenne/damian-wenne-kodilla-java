@@ -173,7 +173,6 @@ public class Controller {
     }
 
     // TODO
-    // save/load
     // sleep
     // draw
     // WinnerBoard
