@@ -9,10 +9,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Controller {
@@ -21,12 +18,14 @@ public class Controller {
     private static final Random RANDOM = new Random();
 
     private final List<FieldButton> fieldButtons = new ArrayList<>();
+    private Map<String, Integer> results = new HashMap<>();
     private Label theWinnerLabel = new Label();
     private String savedGameFilePath = "kodilla-tictactoe/src/main/java/savedGameFile.txt";
+    public String nickName;
+    public int points;
 
     private Controller() {
     }
-
 
     void addButton(FieldButton fieldButton) {
         fieldButtons.add(fieldButton);
@@ -91,6 +90,7 @@ public class Controller {
         if (check("X")) {
             winnerPopUp();
             theWinnerLabel.setText("You Won!");
+            points = points + 1;
             System.out.println("Won");
         }
 
@@ -105,6 +105,8 @@ public class Controller {
             theWinnerLabel.setText("Computer Won!");
             System.out.println("Lost");
         }
+
+        resultsSetting();
     }
 
     private void winnerPopUp() {
@@ -171,6 +173,11 @@ public class Controller {
             System.out.println("Null point exception");
         }
     }
+
+    public void resultsSetting() {
+        results.put(nickName, points);
+    }
+
 
     // TODO
     // sleep
