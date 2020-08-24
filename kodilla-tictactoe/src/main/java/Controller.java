@@ -54,9 +54,11 @@ public class Controller {
     }
 
     boolean checkSingle(int a, int b, int c, String sign) {
-        return fieldButtons.get(a).getText().equals(sign)
-                && fieldButtons.get(b).getText().equals(sign)
-                && fieldButtons.get(c).getText().equals(sign);
+        return check(sign, a) && check(sign, b) && check(sign, c);
+    }
+
+    private boolean check(String sign, int index) {
+        return fieldButtons.get(index).getText().equals(sign);
     }
 
     void restart() {
@@ -96,7 +98,12 @@ public class Controller {
         }
 
         try {
-            compMove();
+            if(difficult){
+                getDifficultLevelMovement();
+            }else {
+                compMove();
+            }
+
         } catch (StackOverflowError e) {
             System.out.println("Game Over");
         }
@@ -184,27 +191,35 @@ public class Controller {
         return nickName + " " + results;
     }
 
-    public void difficultLevel() {
-        if (fieldButtons.get(0).equals("O") && fieldButtons.get(1).equals("O") && fieldButtons.get(2).equals(" ")) {
-                fieldButtons.get(2).setText("O");
+    List<List<Integer>> bars = Arrays.asList(
+            Arrays.asList(0,1,2),
+            Arrays.asList(3,4,5)
+            //8 bars
+
+    );
+
+    public void getDifficultLevelMovement() {
+        for(List<Integer> bar : bars){
+            int zeros = filter(bar, "O").size();
+            int empty = filter(bar, " ").size();
+
+            if(zeros == 2 && empty == 1){
+                FieldButton fieldButton = filter(bar, " ").get(0);
+                fieldButton.setText("O");
+            }else {
+                compMove();
             }
-        if (fieldButtons.get(3).equals("O") && fieldButtons.get(4).equals("O") && fieldButtons.get(5).equals(" ")) {
-            fieldButtons.get(5).setText("O");
+
         }
-        if (fieldButtons.get(6).equals("O") && fieldButtons.get(7).equals("O") && fieldButtons.get(8).equals(" ")) {
-            fieldButtons.get(8).setText("O");
-        }
-        if (fieldButtons.get(1).equals("O") && fieldButtons.get(2).equals("O") && fieldButtons.get(0).equals(" ")) {
-            fieldButtons.get(0).setText("O");
-        }
-        if (fieldButtons.get(4).equals("O") && fieldButtons.get(5).equals("O") && fieldButtons.get(3).equals(" ")) {
-            fieldButtons.get(3).setText("O");
-        }
-        if (fieldButtons.get(7).equals("O") && fieldButtons.get(8).equals("O") && fieldButtons.get(6).equals(" ")) {
-            fieldButtons.get(6).setText("O");
-        }
+
     }
 
+    private List<FieldButton> filter(List<Integer> bar, String s) {
+        return bar.stream()
+                .map(fieldButtons::get)
+                .filter(el -> el.getText().equals(s))
+                .collect(Collectors.toList());
+    }
 
     // TODO
     // sleep
