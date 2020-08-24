@@ -86,11 +86,12 @@ public class TicTacToe extends Application {
         // Right - Results
         Label resultsLabel = new Label("Results:");
         resultsLabel.setFont(new Font("Calibri", 35));
-        Label scoresFromMap = new Label();
+        Label listOfResults = new Label();
+        listOfResults.setText(controller.toString());
 
 
         VBox rightMenu = new VBox();
-        rightMenu.getChildren().addAll(resultsLabel);
+        rightMenu.getChildren().addAll(resultsLabel, listOfResults);
         rightMenu.setPadding(new Insets(0, 5, 5, 5));
         rightMenu.setSpacing(5);
 

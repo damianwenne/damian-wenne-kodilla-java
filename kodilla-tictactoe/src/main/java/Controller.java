@@ -20,6 +20,7 @@ public class Controller {
     private final List<FieldButton> fieldButtons = new ArrayList<>();
     private Map<String, Integer> results = new HashMap<>();
     private Label theWinnerLabel = new Label();
+    private boolean difficult = true;
     private String savedGameFilePath = "kodilla-tictactoe/src/main/java/savedGameFile.txt";
     public String nickName;
     public int points;
@@ -178,6 +179,32 @@ public class Controller {
         results.put(nickName, points);
     }
 
+    @Override
+    public String toString() {
+        return nickName + " " + results;
+    }
+
+    public void difficultLevel() {
+        if (fieldButtons.get(0).equals("O") && fieldButtons.get(1).equals("O") && fieldButtons.get(2).equals(" ")) {
+                fieldButtons.get(2).setText("O");
+            }
+        if (fieldButtons.get(3).equals("O") && fieldButtons.get(4).equals("O") && fieldButtons.get(5).equals(" ")) {
+            fieldButtons.get(5).setText("O");
+        }
+        if (fieldButtons.get(6).equals("O") && fieldButtons.get(7).equals("O") && fieldButtons.get(8).equals(" ")) {
+            fieldButtons.get(8).setText("O");
+        }
+        if (fieldButtons.get(1).equals("O") && fieldButtons.get(2).equals("O") && fieldButtons.get(0).equals(" ")) {
+            fieldButtons.get(0).setText("O");
+        }
+        if (fieldButtons.get(4).equals("O") && fieldButtons.get(5).equals("O") && fieldButtons.get(3).equals(" ")) {
+            fieldButtons.get(3).setText("O");
+        }
+        if (fieldButtons.get(7).equals("O") && fieldButtons.get(8).equals("O") && fieldButtons.get(6).equals(" ")) {
+            fieldButtons.get(6).setText("O");
+        }
+    }
+
 
     // TODO
     // sleep
@@ -185,6 +212,5 @@ public class Controller {
     // WinnerBoard
     // Difficulty levels
     // X/O select
-    // Name input
 }
 
