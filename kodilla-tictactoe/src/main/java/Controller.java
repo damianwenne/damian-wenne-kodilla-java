@@ -1,4 +1,7 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -7,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.*;
 import java.util.*;
@@ -68,13 +72,13 @@ public class Controller {
         }
     }
 
-    void compMove() {
+    void compMoveEasy() {
         FieldButton compButton = fieldButtons.get(RANDOM.nextInt(9));
 
             if (!compButton.getText().equals("X") && !compButton.getText().equals("O")) {
                 compButton.setText("O");
             } else {
-                compMove();
+                compMoveEasy();
             }
         }
 
@@ -93,26 +97,38 @@ public class Controller {
             points = points + 1;
             System.out.println("Won");
             saveToWinnerList();
+            return;
         }
         System.out.println(difficult);
         System.out.println(nickName);
 
         try {
-            if (difficult) {
-                getDifficultLevelMovement();
-            } else {
-                compMove();
-            }
+            makeCompMove();
         } catch (StackOverflowError e) {
             System.out.println("Game Over");
         }
+    }
 
-        if (check("O")) {
-            winnerPopUp();
-            theWinnerLabel.setText("Computer Won!");
-            System.out.println("Lost");
-        }
-        resultsSetting();
+    private void makeCompMove() {
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                if (difficult) {
+                    compMoveHard();
+                } else {
+                    compMoveEasy();
+                }
+                if (check("O")) {
+                    winnerPopUp();
+                    theWinnerLabel.setText("Computer Won!");
+                    System.out.println("Lost");
+                }
+                resultsSetting();
+            }
+        }));
+        timeline.play();
     }
 
     private void winnerPopUp() {
@@ -200,7 +216,8 @@ public class Controller {
             Arrays.asList(2, 4, 6)
     );
 
-    public void getDifficultLevelMovement() {
+    public void compMoveHard() {
+        boolean advancedComputerMove = false;
         for (List<Integer> bar : bars) {
             int zeros = filter(bar, "O").size();
             int empty = filter(bar, " ").size();
@@ -208,10 +225,12 @@ public class Controller {
             if (zeros == 2 && empty == 1) {
                 FieldButton fieldButton = filter(bar, " ").get(0);
                 fieldButton.setText("O");
-            } else {
-                compMove();
+                advancedComputerMove = true;
+                break;
             }
-            break;
+        }
+        if(!advancedComputerMove){
+            compMoveEasy();
         }
     }
 
