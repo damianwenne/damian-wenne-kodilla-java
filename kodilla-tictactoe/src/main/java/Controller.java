@@ -20,10 +20,11 @@ public class Controller {
     private final List<FieldButton> fieldButtons = new ArrayList<>();
     private Map<String, Integer> results = new HashMap<>();
     private Label theWinnerLabel = new Label();
-    private boolean difficult = true;
+    protected boolean difficult;
     private String savedGameFilePath = "kodilla-tictactoe/src/main/java/savedGameFile.txt";
+    protected String winnerListFilePath = "kodilla-tictactoe/src/main/java/winnerListFile.txt";
     public String nickName;
-    public int points;
+    public int points = 0;
 
     private Controller() {
     }
@@ -54,9 +55,11 @@ public class Controller {
     }
 
     boolean checkSingle(int a, int b, int c, String sign) {
-        return fieldButtons.get(a).getText().equals(sign)
-                && fieldButtons.get(b).getText().equals(sign)
-                && fieldButtons.get(c).getText().equals(sign);
+        return check(sign, a) && check(sign, b) && check(sign, c);
+    }
+
+    private boolean check(String sign, int index) {
+        return fieldButtons.get(index).getText().equals(sign);
     }
 
     void restart() {
@@ -67,17 +70,13 @@ public class Controller {
 
     void compMove() {
         FieldButton compButton = fieldButtons.get(RANDOM.nextInt(9));
-        try {
-            Thread.sleep(1);
+
             if (!compButton.getText().equals("X") && !compButton.getText().equals("O")) {
                 compButton.setText("O");
             } else {
                 compMove();
             }
-        } catch (InterruptedException e) {
-            System.out.println("This field is taken");
         }
-    }
 
     public void click(FieldButton button) {
         if (!button.getText().equals(" ")) {
@@ -93,10 +92,17 @@ public class Controller {
             theWinnerLabel.setText("You Won!");
             points = points + 1;
             System.out.println("Won");
+            saveToWinnerList();
         }
+        System.out.println(difficult);
+        System.out.println(nickName);
 
         try {
-            compMove();
+            if (difficult) {
+                getDifficultLevelMovement();
+            } else {
+                compMove();
+            }
         } catch (StackOverflowError e) {
             System.out.println("Game Over");
         }
@@ -106,7 +112,6 @@ public class Controller {
             theWinnerLabel.setText("Computer Won!");
             System.out.println("Lost");
         }
-
         resultsSetting();
     }
 
@@ -140,7 +145,7 @@ public class Controller {
             FileWriter fileWriter = new FileWriter(savedGameFilePath);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             String dataToSave = fieldButtons.stream()
-                    .map(e -> e.getText().replaceAll("X","0").replaceAll("O","1").replaceAll(" ", "2"))
+                    .map(e -> e.getText().replaceAll("X", "0").replaceAll("O", "1").replaceAll(" ", "2"))
                     .collect(Collectors.joining());
             bufferedWriter.write(dataToSave);
             bufferedWriter.close();
@@ -157,11 +162,11 @@ public class Controller {
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line = bufferedReader.readLine();
-            for (int i=0; i<fieldButtons.size(); i++) {
+            for (int i = 0; i < fieldButtons.size(); i++) {
                 FieldButton fieldButton = fieldButtons.get(i);
                 String value = line
-                        .substring(i,i+1)
-                        .replaceAll("0","X")
+                        .substring(i, i + 1)
+                        .replaceAll("0", "X")
                         .replaceAll("1", "O")
                         .replaceAll("2", " ");
                 fieldButton.setText(value);
@@ -184,24 +189,49 @@ public class Controller {
         return nickName + " " + results;
     }
 
-    public void difficultLevel() {
-        if (fieldButtons.get(0).equals("O") && fieldButtons.get(1).equals("O") && fieldButtons.get(2).equals(" ")) {
-                fieldButtons.get(2).setText("O");
+    List<List<Integer>> bars = Arrays.asList(
+            Arrays.asList(0, 1, 2),
+            Arrays.asList(3, 4, 5),
+            Arrays.asList(6, 7, 8),
+            Arrays.asList(0, 3, 6),
+            Arrays.asList(1, 4, 7),
+            Arrays.asList(2, 5, 8),
+            Arrays.asList(0, 4, 8),
+            Arrays.asList(2, 4, 6)
+    );
+
+    public void getDifficultLevelMovement() {
+        for (List<Integer> bar : bars) {
+            int zeros = filter(bar, "O").size();
+            int empty = filter(bar, " ").size();
+
+            if (zeros == 2 && empty == 1) {
+                FieldButton fieldButton = filter(bar, " ").get(0);
+                fieldButton.setText("O");
+            } else {
+                compMove();
             }
-        if (fieldButtons.get(3).equals("O") && fieldButtons.get(4).equals("O") && fieldButtons.get(5).equals(" ")) {
-            fieldButtons.get(5).setText("O");
+            break;
         }
-        if (fieldButtons.get(6).equals("O") && fieldButtons.get(7).equals("O") && fieldButtons.get(8).equals(" ")) {
-            fieldButtons.get(8).setText("O");
-        }
-        if (fieldButtons.get(1).equals("O") && fieldButtons.get(2).equals("O") && fieldButtons.get(0).equals(" ")) {
-            fieldButtons.get(0).setText("O");
-        }
-        if (fieldButtons.get(4).equals("O") && fieldButtons.get(5).equals("O") && fieldButtons.get(3).equals(" ")) {
-            fieldButtons.get(3).setText("O");
-        }
-        if (fieldButtons.get(7).equals("O") && fieldButtons.get(8).equals("O") && fieldButtons.get(6).equals(" ")) {
-            fieldButtons.get(6).setText("O");
+    }
+
+    private List<FieldButton> filter(List<Integer> bar, String s) {
+        return bar.stream()
+                .map(fieldButtons::get)
+                .filter(el -> el.getText().equals(s))
+                .collect(Collectors.toList());
+    }
+
+    public void saveToWinnerList() {
+        try {
+            FileWriter fileWriter = new FileWriter(winnerListFilePath, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            String winnerListToSave = "\n" + nickName + " " + points;
+            bufferedWriter.write(winnerListToSave);
+            bufferedWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("Save Data File Error!");
         }
     }
 
@@ -210,7 +240,6 @@ public class Controller {
     // sleep
     // draw
     // WinnerBoard
-    // Difficulty levels
     // X/O select
 }
 

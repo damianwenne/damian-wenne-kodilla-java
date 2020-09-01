@@ -6,13 +6,25 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class TicTacToe extends Application {
 
@@ -84,14 +96,23 @@ public class TicTacToe extends Application {
 
 
         // Right - Results
+        List<String> resultsList = Collections.emptyList();
+        try {
+            resultsList = Files.readAllLines(Paths.get(controller.winnerListFilePath), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Label resultsLabel = new Label("Results:");
         resultsLabel.setFont(new Font("Calibri", 35));
-        Label listOfResults = new Label();
-        listOfResults.setText(controller.toString());
+        ListView<String> listView = new ListView<>();
+        listView.getItems().addAll(resultsList);
+
+
 
 
         VBox rightMenu = new VBox();
-        rightMenu.getChildren().addAll(resultsLabel, listOfResults);
+        rightMenu.getChildren().addAll(resultsLabel, listView);
         rightMenu.setPadding(new Insets(0, 5, 5, 5));
         rightMenu.setSpacing(5);
 
@@ -118,14 +139,24 @@ public class TicTacToe extends Application {
         nickNameWindow.setMinWidth(250);
         nickNameWindow.setMinHeight(200);
         Button okToCloseButton = new Button("OK");
+        Button easyLevelButton = new Button("Easy");
+        Label selectDificultLevelLabel = new Label("Select difficult level:");
+        easyLevelButton.setMinWidth(60);
+        Button difficultLevelButton = new Button("Difficult");
+        difficultLevelButton.setMinWidth(60);
         okToCloseButton.addEventHandler(ActionEvent.ACTION, (e) -> {
             controller.nickName = nicknameInputField.getText();
             nickNameWindow.close();
         });
+        easyLevelButton.addEventHandler(ActionEvent.ACTION, (e) -> controller.difficult = false);
+        difficultLevelButton.addEventHandler(ActionEvent.ACTION, (e) -> controller.difficult = true);
 
         VBox inputNickPopUpVBoxLayout = new VBox(10);
-        inputNickPopUpVBoxLayout.getChildren().addAll(nicknameInputField, okToCloseButton);
+        HBox difficultLecelSelectHBoxLayout = new HBox(5);
+        difficultLecelSelectHBoxLayout.getChildren().addAll(easyLevelButton, difficultLevelButton);
+        inputNickPopUpVBoxLayout.getChildren().addAll(nicknameInputField, selectDificultLevelLabel, difficultLecelSelectHBoxLayout, okToCloseButton);
         inputNickPopUpVBoxLayout.setAlignment(Pos.CENTER);
+        difficultLecelSelectHBoxLayout.setAlignment(Pos.CENTER);
 
         Scene winnerPopUpScene = new Scene(inputNickPopUpVBoxLayout);
         nickNameWindow.setScene(winnerPopUpScene);
