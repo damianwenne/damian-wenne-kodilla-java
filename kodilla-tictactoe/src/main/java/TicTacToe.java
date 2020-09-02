@@ -96,16 +96,18 @@ public class TicTacToe extends Application {
 
 
         // Right - Results
-        List<String> resultsList = Collections.emptyList();
+        List<Label> resultsList = Collections.emptyList();
         try {
-            resultsList = Files.readAllLines(Paths.get(controller.winnerListFilePath), StandardCharsets.UTF_8);
+            resultsList = Files.readAllLines(Paths.get(controller.winnerListFilePath), StandardCharsets.UTF_8).stream()
+                    .map(e -> new Label(e))
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         Label resultsLabel = new Label("Results:");
         resultsLabel.setFont(new Font("Calibri", 35));
-        ListView<String> listView = new ListView<>();
+        ListView<Label> listView = new ListView<>();
         listView.getItems().addAll(resultsList);
 
 
@@ -127,6 +129,7 @@ public class TicTacToe extends Application {
         primaryStage.setTitle("Tic Tac Toe");
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(e -> controller.saveToWinnerList());
 
         // Nickname input window
 
