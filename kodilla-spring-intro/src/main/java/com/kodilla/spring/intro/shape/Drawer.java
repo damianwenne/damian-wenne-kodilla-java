@@ -2,7 +2,7 @@ package com.kodilla.spring.intro.shape;
 
 
 public class Drawer {
-        final Shape shape;
+        private final Shape shape;
 
         public Drawer(final Shape shape) {
             this.shape = shape;
