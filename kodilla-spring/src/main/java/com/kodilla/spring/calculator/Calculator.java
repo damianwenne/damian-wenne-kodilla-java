@@ -22,10 +22,14 @@ public class Calculator {
     }
 
     public double mul(double a, double b) {
-        return 0;
+        double mulResult = a * b;
+        display.displayValue(mulResult);
+        return mulResult;
     }
 
     public double div(double a, double b) {
-        return a / b;
+        double divResult = a / b;
+        display.displayValue(divResult);
+        return divResult;
     }
 }

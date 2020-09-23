@@ -21,4 +21,31 @@ public class CalculatorTestSuite {
         //Then
         Assert.assertEquals(15,result, 0);
     }
+
+    @Test
+    public void testSubCalculations(){
+        //When
+        double result = calculator.sub(5,10);
+
+        //Then
+        Assert.assertEquals(-5,result, 0);
+    }
+
+    @Test
+    public void testMulCalculations(){
+        //When
+        double result = calculator.mul(5,10);
+
+        //Then
+        Assert.assertEquals(50,result, 0);
+    }
+
+    @Test
+    public void testDivCalculations(){
+        //When
+        double result = calculator.div(5,10);
+
+        //Then
+        Assert.assertEquals(0.5,result, 0);
+    }
 }
