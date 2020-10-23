@@ -5,6 +5,6 @@ import com.kodilla.patterns.strategy.BuyPredictor;
 public class BalancedPredictor implements BuyPredictor {
     @Override
     public String predictWhatToBuy() {
-        return "[BalancedPredictor] Buy shared units of Fund XYZ";
+        return "[Balanced predictor] Buy shared units of Fund XYZ";
     }
 }
